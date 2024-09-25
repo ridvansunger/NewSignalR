@@ -26,6 +26,7 @@ app.UseStaticFiles();
 
 //*
 app.MapHub<ExampleHub>("/examplehub");
+app.MapHub<ExampleTypeSafeHub>("/exampleTypeSafeHub");
 
 app.UseRouting();
 
