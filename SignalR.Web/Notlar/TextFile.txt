@@ -1,0 +1,4 @@
+﻿1. Connection oluştur.
+2. Connection ı start yap. İlgili Hub a bir bağlantı aç. İlk bağlantı Rest mimarisi ile kurulur.
+Client hub connect olduktan sonra çift yönlü iletişim web sockect protokülü üzerinden devam eder. 
+sTransport(WebSockets, Server-Sent Events, Long Pooling bu üçünde biri olur.)
