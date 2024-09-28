@@ -2,6 +2,9 @@
 
     const broadcastMessageAllClientHubMethodCall = "BroadcastMessageAllClient";//çağrılan method
     const broadcastMessageCallerClient = "BroadcastMessageCallerClient";
+    const broadcastMessageOtherClient = "BroadcastMessageOtherClient";
+
+    const receiveMessageForOtherClient = "ReceiveMessageForOtherClient";
 
     const receiveMessageForCallerClient = "ReceiveMessageForCallerClient";
     const receiveMessageForAllClientClientMethodCall = "ReceiveMessageForAllClient";// çağrılan metdun tetiklediği method.
@@ -33,8 +36,7 @@
     //subscribe olduk burada.
     connection.on(receiveMessageForAllClientClientMethodCall, (message) => {
 
-        span_client_count.text(message);
-
+      
         console.log("Connected Client Count:", message);
 
     });
@@ -42,9 +44,29 @@
 
     connection.on(receiveMessageForCallerClient, (message) => {
 
-        span_client_count.text(message);
-
+      
         console.log("Connected Client Count:", message);
+
+    });
+
+    connection.on(receiveMessageForCallerClient, (message) => {
+
+        
+        console.log("Connected Client Count:", message);
+
+    });
+
+    connection.on(receiveMessageForOtherClient, (message) => {
+
+      
+        console.log("Connected Client Count:", message);
+
+    });
+
+    connection.on(receiveConnenctedClientCountAllClient, (count) => {
+
+        span_client_count.text(count);
+        console.log("Connected Client Count:", count);
 
     });
 
@@ -52,7 +74,6 @@
     $("#btn-send-message-all-client").click(function () {
 
         const message = "hello world";
-
         connection.invoke(broadcastMessageAllClientHubMethodCall, message).catch(err => console.log("hata", err));
 
     });
@@ -61,8 +82,12 @@
         const message = "hello caller";
 
         connection.invoke(broadcastMessageCallerClient, message).catch(err => console.log("hata", err));
-
-
     });
 
+
+    $("#btn-send-message-other-client").click(function () {
+        const message = "hello other caller";
+
+        connection.invoke(broadcastMessageOtherClient, message).catch(err => console.log("hata", err));
+    });
 });

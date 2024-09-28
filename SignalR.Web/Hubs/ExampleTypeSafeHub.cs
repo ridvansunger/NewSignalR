@@ -14,11 +14,13 @@ namespace SignalR.Web.Hubs
 
         public async Task BroadcastMessageCallerClient(string message)
         {
-
-
             await Clients.Caller.ReceiveMessageForCallerClient(message);
         }
 
+        public async Task BroadcastMessageOtherClient(string message)
+        {
+            await Clients.Others.ReceiveMessageForOtherClient(message);
+        }
 
 
         public override async Task OnConnectedAsync()

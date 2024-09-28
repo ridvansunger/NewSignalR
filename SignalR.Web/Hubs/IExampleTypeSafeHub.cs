@@ -7,5 +7,7 @@
         Task ReceiveConnenctedClientCountAllClient(int clientCount);
 
         Task ReceiveMessageForCallerClient(string message);
+
+        Task ReceiveMessageForOtherClient(string message);
     }
 }
