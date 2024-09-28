@@ -1,8 +1,11 @@
 ﻿$(document).ready(function () {
 
     const broadcastMessageAllClientHubMethodCall = "BroadcastMessageAllClient";//çağrılan method
+    const broadcastMessageCallerClient = "BroadcastMessageCallerClient";
 
-    const ReceiveMessageForAllClientClientMethodCall = "ReceiveMessageForAllClient";// çağrılan metdun tetiklediği method.
+    const receiveMessageForCallerClient = "ReceiveMessageForCallerClient";
+    const receiveMessageForAllClientClientMethodCall = "ReceiveMessageForAllClient";// çağrılan metdun tetiklediği method.
+
 
     const receiveConnenctedClientCountAllClient = "ReceiveConnenctedClientCountAllClient";
 
@@ -28,11 +31,20 @@
 
 
     //subscribe olduk burada.
-    connection.on(receiveConnenctedClientCountAllClient, (count) => {
+    connection.on(receiveMessageForAllClientClientMethodCall, (message) => {
 
-        span_client_count.text(count);
+        span_client_count.text(message);
 
-        console.log("Connected Client Count:", count);
+        console.log("Connected Client Count:", message);
+
+    });
+
+
+    connection.on(receiveMessageForCallerClient, (message) => {
+
+        span_client_count.text(message);
+
+        console.log("Connected Client Count:", message);
 
     });
 
@@ -45,5 +57,12 @@
 
     });
 
+    $("#btn-send-message-caller-client").click(function () {
+        const message = "hello caller";
+
+        connection.invoke(broadcastMessageCallerClient, message).catch(err => console.log("hata", err));
+
+
+    });
 
 });
