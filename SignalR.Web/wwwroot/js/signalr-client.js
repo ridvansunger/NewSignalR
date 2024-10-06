@@ -37,7 +37,6 @@
             $("#groupList").append(`<p>${x}</p>`)
 
         })
-
     }
 
     $("#btn-groupA-add").click(function () {
@@ -134,46 +133,28 @@
 
     //subscribe olduk burada.
     connection.on(receiveMessageForAllClientClientMethodCall, (message) => {
-
-
         console.log("Connected Client Count:", message);
-
     });
 
     connection.on(receiveTypeMessageForAllClient, (product) => {
-
-
         console.log("Gelen Ürün :", product);
-
     });
 
 
     connection.on(receiveMessageForCallerClient, (message) => {
-
-
         console.log("Connected Client Count:", message);
-
     });
 
     connection.on(receiveMessageForCallerClient, (message) => {
-
-
         console.log("Connected Client Count:", message);
-
     });
 
     connection.on(receiveMessageForOtherClient, (message) => {
-
-
         console.log("(Others): Gelen Mesaj:", message);
-
     });
 
     connection.on(receiveMessageForIndividualClient, (message) => {
-
-
         console.log("(Individual): Gelen Mesaj :", message);
-
     });
 
 
@@ -207,8 +188,6 @@
         var connectionId = $("#text-connectionId").val();
         connection.invoke(broadcastMessageIndividualClient, connectionId, message).catch(err => console.log("hata", err));
         console.log("Mesaj Gönderildi");
-
-
     });
 
 
@@ -217,8 +196,6 @@
 
         connection.invoke(broadcastTypeMessageAllClient, product).catch(err => console.log("hata", err));
         console.log("ürün Gönderildi");
-
-
 
     });
 
