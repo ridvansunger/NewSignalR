@@ -19,6 +19,13 @@
     const receiveConnenctedClientCountAllClient = "ReceiveConnenctedClientCountAllClient";
 
 
+    const receiveTypeMessageForAllClient = "ReceiveTypeMessageForAllClient";
+    const broadcastTypeMessageAllClient = "BroadcastTypeMessageAllClient";
+
+
+
+
+
     const groupA = "GroupA";
     const groupB = "GroupB";
     let currentGroupList = [];
@@ -133,6 +140,13 @@
 
     });
 
+    connection.on(receiveTypeMessageForAllClient, (product) => {
+
+
+        console.log("Gelen Ürün :", product);
+
+    });
+
 
     connection.on(receiveMessageForCallerClient, (message) => {
 
@@ -193,6 +207,17 @@
         var connectionId = $("#text-connectionId").val();
         connection.invoke(broadcastMessageIndividualClient, connectionId, message).catch(err => console.log("hata", err));
         console.log("Mesaj Gönderildi");
+
+
+    });
+
+
+    $("#btn-send-typed-message-all-client").click(function () {
+        const product = { id: 1, name: "Product", price: 200 }
+
+        connection.invoke(broadcastTypeMessageAllClient, product).catch(err => console.log("hata", err));
+        console.log("ürün Gönderildi");
+
 
 
     });
