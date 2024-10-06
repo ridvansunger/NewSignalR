@@ -11,5 +11,7 @@
         Task ReceiveMessageForOtherClient(string message);
 
         Task ReceiveMessageForIndividualClient(string message);
+        Task ReceiveMessageForGroupClient(string message);
+
     }
 }

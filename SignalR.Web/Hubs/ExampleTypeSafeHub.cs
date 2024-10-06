@@ -22,18 +22,49 @@ namespace SignalR.Web.Hubs
             await Clients.Others.ReceiveMessageForOtherClient(message);
         }
 
-        public async Task BroadcastMessageIndividualClient(string connectionId,string message)
+        public async Task BroadcastMessageIndividualClient(string connectionId, string message)
         {
             await Clients.Client(connectionId).ReceiveMessageForIndividualClient(message);
         }
 
 
+        //
+        public async Task BroadcastMessageToGroupClient(string groupName, string message)
+        {
+            await Clients.Group(groupName).ReceiveMessageForGroupClient(message);
+        }
+
+        //gruba dahil olma
+        public async Task AddGroup(string groupName)
+        {
+            await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
+
+            //iki yer tetiklenmeli 1. gruba dahil oldun 2. diğer clientlara mesaj göndermeli
+            await Clients.Caller.ReceiveMessageForCallerClient($"{groupName} Gruba dahil oldunuz.");
+
+            //sadewce grubuna
+            await Clients.Group(groupName).ReceiveMessageForGroupClient($"Kullanıcı ({Context.ConnectionId}) {groupName} dahil oldu.");
+
+            //Diğer herkese
+            //await Clients.Others.ReceiveMessageForOtherClient($"Kullanıcı ({Context.ConnectionId}) {groupName} dahil oldu.");
+        }
+
+        public async Task RemoveGroup(string groupName)
+        {
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName);
+            await Clients.Caller.ReceiveMessageForCallerClient($"{groupName} Grubundan çıktınız.");
+           
+            await Clients.Group(groupName).ReceiveMessageForGroupClient($"Kullanıcı ({Context.ConnectionId}) {groupName} grubundan çıktı.");
+            //await Clients.Others.ReceiveMessageForOtherClient($"Kullanıcı ({Context.ConnectionId}) {groupName} grubundan çıktı.");
+
+        }
+
+
+
         public override async Task OnConnectedAsync()
         {
             ConnectedClinetCount++;
-
             await Clients.All.ReceiveConnenctedClientCountAllClient(ConnectedClinetCount);
-
             await base.OnConnectedAsync();
         }
 
