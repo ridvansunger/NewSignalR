@@ -34,6 +34,43 @@ namespace SignalR.Web.Hubs
         }
 
 
+        public async Task BroadcastStreamDataToAllClient(IAsyncEnumerable<string> nameasChunks)
+        {
+            await Task.Delay(1000);
+
+            await foreach (var name in nameasChunks)
+            {
+                await Task.Delay(1000);
+                await Clients.All.ReceiveMessageAsStreamForAllClient(name);
+            }
+        }
+
+        //Client to hub
+        public async Task BroadcastStreamProductToAllClient(IAsyncEnumerable<Product> productsChunks)
+        {
+            await Task.Delay(1000);
+
+            await foreach (var product in productsChunks)
+            {
+                await Task.Delay(1000);
+                await Clients.All.ReceiveProductAsStreamForAllClient(product);
+            }
+        }
+
+
+        //Hub to client
+        public async IAsyncEnumerable<string> BroadcastFromHubToClient(int count)
+        {
+            foreach (var item in Enumerable.Range(1, count).ToList())
+            {
+                await Task.Delay(1000);
+                yield return $"{item}. data";
+
+            }
+        }
+
+
+
         //
         public async Task BroadcastMessageToGroupClient(string groupName, string message)
         {
@@ -59,7 +96,7 @@ namespace SignalR.Web.Hubs
         {
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName);
             await Clients.Caller.ReceiveMessageForCallerClient($"{groupName} Grubundan çıktınız.");
-           
+
             await Clients.Group(groupName).ReceiveMessageForGroupClient($"Kullanıcı ({Context.ConnectionId}) {groupName} grubundan çıktı.");
             //await Clients.Others.ReceiveMessageForOtherClient($"Kullanıcı ({Context.ConnectionId}) {groupName} grubundan çıktı.");
 
@@ -80,6 +117,8 @@ namespace SignalR.Web.Hubs
             await Clients.All.ReceiveConnenctedClientCountAllClient(ConnectedClinetCount);
             await base.OnDisconnectedAsync(exception);
         }
+
+
 
     }
 }

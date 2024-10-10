@@ -31,6 +31,36 @@
     let currentGroupList = [];
 
 
+
+    async function start() {
+
+        try {
+
+            await connection.start().then(() => {
+                console.log("Hub ile bağlantı kuruldu.");
+                $("#connectionId").html(`Connection Id: ${connection.connectionId}`);
+            });
+
+        } catch (err) {
+            console.log("hub ile bağlantı kurulamadı:", err)
+            setTimeout(() => start(), 5000);
+        }
+    }
+
+    connection.onclose(async () => {
+        await start();
+    })
+
+    start();
+
+
+
+
+
+
+
+
+
     function refreshGroupList() {
         $("#groupList").empty();
         currentGroupList.forEach(x => {
@@ -100,21 +130,6 @@
 
 
 
-
-    function start() {
-        connection.start().then(() => {
-            console.log("Hub ile bağlantı kuruldu.");
-            $("#connectionId").html(`Connection Id: ${connection.connectionId}`);
-        });
-    }
-
-    try {
-        start();
-
-    } catch (e) {
-        setTimeout(() => start(), 5000); //bağlantı kuramazasa 5 saniye de bir bağlantı kurmaya çalışsın.
-    }
-
     var span_client_count = $("#span-connected-client-count");
     connection.on(receiveConnenctedClientCountAllClient, (count) => {
 
@@ -122,13 +137,6 @@
         console.log("Connected Client Count:", count);
 
     });
-
-
-
-
-
-
-
 
 
     //subscribe olduk burada.
